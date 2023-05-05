@@ -12,20 +12,25 @@ struct Node
   Node(int data) : data(data), left(nullptr), right(nullptr) {}
 };
 
-int idx = -1;
-Node *createTree(int *nodes)
+Node *createTreeHelper(int *nodes, int *idx)
 {
-  idx++;
-  int data = nodes[idx];
+  (*idx)++;
+  int data = nodes[*idx];
 
   if (data == -1)
     return nullptr;
 
   Node *newNode = new Node(data);
-  newNode->left = createTree(nodes);
-  newNode->right = createTree(nodes);
+  newNode->left = createTreeHelper(nodes, idx);
+  newNode->right = createTreeHelper(nodes, idx);
 
   return newNode;
+}
+
+Node *createTree(int *nodes)
+{
+  int idx = -1;
+  return createTreeHelper(nodes, &idx);
 }
 
 // Recursive
@@ -347,14 +352,41 @@ void printTree(Node *root, int indent = 0, char edgeChar = ' ')
   printTree(root->left, indent + INDENT_SIZE, '\\');
 }
 
+bool isIdentical(Node *n1, Node *n2)
+{
+  if (!n1 && !n2)
+    return true;
+  if (!n1 || !n2)
+    return false;
+
+  return (n1->data == n2->data) && isIdentical(n1->left, n2->left) && isIdentical(n1->right, n2->right);
+}
+
+bool isSubtree(Node *root, Node *subtree)
+{
+  if (!subtree)
+    return true;
+
+  if (!root)
+    return false;
+
+  if (root->data == subtree->data && isIdentical(root, subtree))
+    return true;
+
+  return isSubtree(root->left, subtree) || isSubtree(root->right, subtree);
+}
+
 int main(int argc, char const *argv[])
 {
   /* code */
 
   // int nodes[] = {1, 2, 4, -1, -1, 5, -1, -1, 3, 6, -1, -1, 7, -1, -1};
   int nodes[] = {1, 2, 4, -1, -1, 5, -1, -1, 3, 6, -1, -1, 7, 8, -1, -1, 9, -1, -1};
-
+  int nodes2[] = {7, 8, -1, -1, 9, -1, -1};
   Node *root = createTree(nodes);
+
+  // Reset the idx i am lazy to do this
+  Node *subtree = createTree(nodes2);
   // std::cout << root->data << std::endl;
 
   // Traversals Recursive
@@ -387,6 +419,13 @@ int main(int argc, char const *argv[])
   std::cout << "\n\n";
   printTree(root, 0, '|');
   std::cout << "\n\n\n";
+
+  std::cout << "\n\n";
+  printTree(subtree, 0, '|');
+  std::cout << "\n\n\n";
+
+  bool isASubtree = isSubtree(root, subtree);
+  (isASubtree) ? std::cout << "The Given Tree is a subtree of the root" : std::cout << "The Given Tree not a subtree of the root!!";
 
   return 0;
 }

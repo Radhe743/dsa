@@ -17,9 +17,9 @@ if not test -f $filename
 end
 
 # extract the filename without the .cpp extention to name it as the binary file
-set executable (basename $filename .cpp)
+set executable ./bin/(basename $filename .cpp)
 
-g++ -o $executable $filename ./utils.cpp
+g++ -o $executable $filename 
 
 if test $status -ne 0
   echo "Compilation of '$filename' failed with status $status"
