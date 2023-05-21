@@ -26,7 +26,7 @@ std::ostream &operator<<(std::ostream &os, const ListNode *node)
   return os;
 }
 
-ListNode *mergeLists(ListNode *list1, ListNode *list2)
+ListNode *mergeSortedLists(ListNode *list1, ListNode *list2)
 {
   ListNode *dummy = new ListNode(0);
   ListNode *current = dummy;
@@ -93,7 +93,7 @@ int main(int argc, char const *argv[])
 
   std::cout << list_1;
   std::cout << list_2;
-  ListNode *merged = mergeLists(list_1, list_2);
+  ListNode *merged = mergeSortedLists(list_1, list_2);
 
   std::cout << merged << std::endl;
 

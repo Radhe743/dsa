@@ -27,7 +27,7 @@ ListNode *mergeListsRecur(ListNode *l1, ListNode *l2)
   }
 }
 
-ListNode *mergeLists(ListNode *l1, ListNode *l2)
+ListNode *mergeSortedLists(ListNode *l1, ListNode *l2)
 {
   ListNode *dummy = new ListNode(0);
   ListNode *curr = dummy;
